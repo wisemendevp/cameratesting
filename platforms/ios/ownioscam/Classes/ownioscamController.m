@@ -18,10 +18,6 @@
                                           otherButtonTitles:nil];
     [alert show];
 }
-
-
-
-
 // Entry point method
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -29,64 +25,47 @@
         // Instantiate the UIImagePickerController instance
         self.picker = [[UIImagePickerController alloc] init];
         
-        // Configure the UIImagePickerController instance
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         self.picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
         self.picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
         self.picker.showsCameraControls = NO;
-        self.picker.wantsFullScreenLayout = YES;
-       // self.picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOn;
-      //  self.picker.
+        
         // Make us the delegate for the UIImagePickerController
         self.picker.delegate = self;
-      //  self.picker.modalPresentationStyle =UIModalPresentationCustom;
-      //  self.picker.modalTransitionStyle = UIDeviceOrientationPortrait;
-     //   self.overlay = [[ownioscamController alloc] init @"ownioscam" bundle:nil]
-                        
+        
         // Set the frames to be full screen
-      //  self.picker.toolbarHidden = YES;
-    //    self.picker.cameraViewTransform = CGAffineTransformScale(self.picker.cameraViewTransform, 960, 720);
-      //  self.picker.preferredInterfaceOrientationForPresentation = UIDeviceOrientationPortrait;
-    
-      //  self.picker.preferredInterfaceOrientationForPresentation =
-       CGRect screenFrame = [[UIScreen mainScreen] bounds];
-        
+        CGRect screenFrame = CGRectMake(0, 0, 1024, 2049);
         self.view.frame = screenFrame;
-      //  self.view.window.frame = screenFrame;
-       self.picker.view.frame = screenFrame;
-     //   self.picker.view = [UIColor clearColor];
-      //  self.view = [UIColor clearColor];
-      //  self.picker.view.window.frame = screenFrame;
-      
-        self.view.userInteractionEnabled = YES;
+        self.picker.view.frame = screenFrame;
+         self.picker.cameraViewTransform = CGAffineTransformMakeScale(1.0, 1.03);
         
-        UIPinchGestureRecognizer *pinchRec = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(doPinch:)];
-       [self.view addGestureRecognizer:pinchRec];        // Set this VC's view as the overlay view for the UIImagePickerController
-      //  [self.view.window addSubview:self.picker.view];
-        
-        CGSize screenBounds = [UIScreen mainScreen].bounds.size;
-        
-        CGFloat cameraAspectRatio = 4.0f/3.0f;
-        
-        CGFloat camViewHeight = screenBounds.width * cameraAspectRatio;
-        CGFloat scale = screenBounds.height / camViewHeight;
-        
-        self.picker.cameraViewTransform = CGAffineTransformMakeTranslation(0, (screenBounds.height - camViewHeight) / 2.0);
-        self.picker.cameraViewTransform = CGAffineTransformScale(self.picker.cameraViewTransform, scale, scale);
-        
-   self.picker.cameraOverlayView = self.view;
-      //  CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-        //float cameraAspectRatio = 4.0 / 3.0;
-      //  float imageWidth = floorf(screenSize.width * cameraAspectRatio);
-      //  float scale = ceilf((screenSize.height / imageWidth) * 10.0) / 10.0;
-      //  self.picker.cameraViewTransform = CGAffineTransformMakeScale(scale, scale);
+        // Set this VC's view as the overlay view for the UIImagePickerController
+        self.picker.cameraOverlayView = self.view;
     self.picker.cameraOverlayView.backgroundColor=[UIColor clearColor];
-          _lastScale = 1.;
+        _lastScale = 1.;
     }
     return self;
 }
 
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return toInterfaceOrientation == UIInterfaceOrientationPortrait;
+}
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
 
 -(void) doPinch:(UIPinchGestureRecognizer *) sender
 {
