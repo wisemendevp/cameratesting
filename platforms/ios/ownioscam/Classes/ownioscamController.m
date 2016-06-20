@@ -33,17 +33,25 @@
         // Make us the delegate for the UIImagePickerController
         self.picker.delegate = self;
         
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        
         // Set the frames to be full screen
         CGRect screenFrame = CGRectMake(0, 0, 1024, 2049);
         self.view.frame = screenFrame;
         self.picker.view.frame = screenFrame;
-        CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-        CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0); //This slots the preview exactly in the middle of the screen by moving it down 71 points
-        self.picker.cameraViewTransform = translate;
         
-        CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
-        self.picker.cameraViewTransform = scale;
+        if(orientation == UIDeviceOrientationPortrait)
+        {
+        CGSize screenBounds = [UIScreen mainScreen].bounds.size;
         
+        CGFloat cameraAspectRatio = 4.0f/3.0f;
+        
+        CGFloat camViewHeight = screenBounds.width * cameraAspectRatio;
+        CGFloat scale = screenBounds.height / camViewHeight;
+        
+        self.picker.cameraViewTransform = CGAffineTransformMakeTranslation(0, (screenBounds.height - camViewHeight) / 2.0);
+        self.picker.cameraViewTransform = CGAffineTransformScale(self.picker.cameraViewTransform, scale, scale);
+        }
         // Set this VC's view as the overlay view for the UIImagePickerController
         self.picker.cameraOverlayView = self.view;
     self.picker.cameraOverlayView.backgroundColor=[UIColor clearColor];
