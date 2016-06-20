@@ -37,7 +37,12 @@
         CGRect screenFrame = CGRectMake(0, 0, 1024, 2049);
         self.view.frame = screenFrame;
         self.picker.view.frame = screenFrame;
-         self.picker.cameraViewTransform = CGAffineTransformMakeScale(1.0, 1.03);
+        CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+     
+        float cameraAspectRatio = 4.0 / 3.0;
+        float imageWidth = floorf(screenSize.width * cameraAspectRatio);
+        float scale = ceilf((screenSize.height / imageWidth) * 10.0) / 10.0;
+         self.picker.cameraViewTransform = CGAffineTransformMakeScale(scale, scale);
         
         // Set this VC's view as the overlay view for the UIImagePickerController
         self.picker.cameraOverlayView = self.view;
