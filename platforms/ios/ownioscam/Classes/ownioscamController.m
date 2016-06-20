@@ -38,11 +38,11 @@
         self.view.frame = screenFrame;
         self.picker.view.frame = screenFrame;
         CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-     
-        float cameraAspectRatio = 4.0 / 3.0;
-        float imageWidth = floorf(screenSize.width * cameraAspectRatio);
-        float scale = ceilf((screenSize.height / imageWidth) * 10.0) / 10.0;
-         self.picker.cameraViewTransform = CGAffineTransformMakeScale(scale, scale);
+        CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0); //This slots the preview exactly in the middle of the screen by moving it down 71 points
+        self.picker.cameraViewTransform = translate;
+        
+        CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
+        self.picker.cameraViewTransform = scale;
         
         // Set this VC's view as the overlay view for the UIImagePickerController
         self.picker.cameraOverlayView = self.view;
